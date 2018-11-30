@@ -1,15 +1,48 @@
 import React, { Component } from 'react';
+import { Pagination } from 'antd';
+import { List, Avatar } from 'antd';
 import './Pagination.css';
 
-const LIST = ["a", "b", "c", "d", "e", "f", "g", "k", "l",];
+const data = [
+  {
+    title: 'Ant Design Title 1',
+  },
+  {
+    title: 'Ant Design Title 2',
+  },
+  {
+    title: 'Ant Design Title 3',
+  },
+  {
+    title: 'Ant Design Title 4',
+  },
+  {
+    title: 'Ant Design Title 5',
+  },
+  {
+    title: 'Ant Design Title 6',
+  },
+  {
+    title: 'Ant Design Title 7',
+  },
+  {
+    title: 'Ant Design Title 8',
+  },
+  {
+    title: 'Ant Design Title 9',
+  },
+  {
+    title: 'Ant Design Title 10',
+  },
+];
 const ITEMS_PER_PAGE = 3;
 
-class Pagination extends Component {
+class PaginationApp extends Component {
   state = {
     activePage: 1
   }
 
-  setActivePage = (page) => () => {
+  setActivePage = (page) => {
     console.log(page);
     this.setState({
       activePage: page
@@ -18,29 +51,28 @@ class Pagination extends Component {
   render() {
     const lastItemIndex = this.state.activePage * ITEMS_PER_PAGE;
     const firstItemIndex = lastItemIndex - ITEMS_PER_PAGE;
-    const currentItems = LIST.slice(firstItemIndex, lastItemIndex);
-    const rangeOfPages = Math.ceil(LIST.length / ITEMS_PER_PAGE);
-    const pageNumbers = [];
-    for (let i = 1; i <= rangeOfPages; i++) {
-      pageNumbers.push(<li
-        className="page-number"
-        key={i}
-        onClick={this.setActivePage(i)}
-      >
-        {i}
-      </li>)
-    }
+    const currentItems = data.slice(firstItemIndex, lastItemIndex);
+
     return (
       <div className="App" >
-        <ul className="list">
-          {currentItems.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-        <ul className="pages">
-          {pageNumbers}
-        </ul>
+        <List
+          itemLayout="horizontal"
+          dataSource={currentItems}
+          renderItem={item => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                title={<a href="https://ant.design">{item.title}</a>}
+                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+              />
+            </List.Item>
+          )}
+        />
+
+        <Pagination current={this.state.activePage} pageSize={ITEMS_PER_PAGE} total={data.length} onChange={this.setActivePage} />
       </div>
     );
   }
 }
 
-export default Pagination;
+export default PaginationApp;
